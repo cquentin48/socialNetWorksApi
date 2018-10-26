@@ -2,6 +2,7 @@ package com.example.lpiem.facebookapp;
 
 import android.content.Intent;
 
+import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.login.widget.LoginButton;
 
@@ -18,7 +19,7 @@ public interface FacebookApiInterface {
     /**
      * Fonction de connexion
      */
-    void logIn(LoginButton loginButton, CallbackManager callbackManager);
+    void logIn(LoginButton loginButton, CallbackManager callbackManager, final AccessToken accessToken);
 
     /**
      * Fonction de déconnexion

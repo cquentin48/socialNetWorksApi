@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
@@ -18,6 +19,7 @@ import java.util.Arrays;
 public class MainActivity extends AppCompatActivity {
     private CallbackManager callbackManager;
     private FacebookApiPresenter facebookApiPresenter;
+    private AccessToken accessToken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,9 +29,12 @@ public class MainActivity extends AppCompatActivity {
         callbackManager = CallbackManager.Factory.create();
         facebookApiPresenter = new FacebookApiPresenter(this);
 
+        accessToken = AccessToken.getCurrentAccessToken();
+
         LoginButton loginButton = findViewById(R.id.login_button);
         loginButton.setReadPermissions(Arrays.asList("user_status","user_friends"));
         if(facebookApiPresenter.isUserLoggedIn() == true){
+            facebookApiPresenter.logIn(loginButton,callbackManager,accessToken);
             Intent facebookIntent = new Intent(MainActivity.this, MainActivityFacebook.class);
             startActivity(facebookIntent);
         }else{

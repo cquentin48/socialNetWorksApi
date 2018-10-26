@@ -41,15 +41,6 @@ public class MainActivityFacebook extends AppCompatActivity {
 
         JSONArray friendslist;
         ArrayList<String> friends = new ArrayList<String>();
-        /*try {
-            friendslist = new JSONArray(jsondata);
-            for (int l=0; l < friendslist.length(); l++) {
-                friends.add(friendslist.getJSONObject(l).getString("name"));
-            }
-            Log.d("Liste des amis", friends.toString());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }*/
 
         ShareLinkContent content = new ShareLinkContent.Builder()
                 .setContentUrl(Uri.parse("https://developers.facebook.com"))

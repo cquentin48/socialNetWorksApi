@@ -43,25 +43,25 @@ public class FacebookApiPresenter implements FacebookApiInterface {
     }
 
     @Override
-    public void logIn(LoginButton loginButton, CallbackManager callbackManager) {
+    public void logIn(LoginButton loginButton, CallbackManager callbackManager, final AccessToken accessToken) {
 
         // Callback registration
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
-            public void onSuccess(LoginResult loginResult) {Bundle params = new Bundle();
-                params.putString("user", "cquentin48");
-                params.putString("role", "administrators");
-                new GraphRequest(
-                    AccessToken.getCurrentAccessToken(),
-                    "/8325f4957059689394b689305819752d/roles",
-                    null,
-                    HttpMethod.GET,
-                    new GraphRequest.Callback() {
-                        public void onCompleted(GraphResponse response) {
-                            mainActivity.startActivityFacebook(response);
-                        }
-                    }
-            ).executeAsync();
+            public void onSuccess(LoginResult loginResult) {
+                GraphRequest request = GraphRequest.newMeRequest(
+                        accessToken,
+                        new GraphRequest.GraphJSONObjectCallback() {
+                            @Override
+                            public void onCompleted(JSONObject object, GraphResponse response) {
+                                Log.d("Information JSON", object.toString());
+                            }
+                        });
+
+                Bundle parameters = new Bundle();
+                parameters.putString("fields", "id,name,labels,email,friendlists{id,name}");
+                request.setParameters(parameters);
+                request.executeAsync();
             }
 
             @Override
