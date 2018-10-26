@@ -9,6 +9,7 @@ import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.GraphRequest;
+import com.facebook.GraphRequestAsyncTask;
 import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
 import com.facebook.login.LoginManager;
@@ -43,32 +44,24 @@ public class FacebookApiPresenter implements FacebookApiInterface {
 
     @Override
     public void logIn(LoginButton loginButton, CallbackManager callbackManager) {
-        loginButton.setReadPermissions("email");
 
         // Callback registration
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
-            public void onSuccess(LoginResult loginResult) { AccessToken token = AccessToken.getCurrentAccessToken();
-                GraphRequest graphRequest = new GraphRequest(token,"me/friends",null,HttpMethod.GET(
-                        new GraphRequest.Callback(){
-
-                            /**
-                             * The method that will be called when a request completes.
-                             *
-                             * @param response the Response of this request, which may include error information if the
-                             *                 request was unsuccessful
-                             */
-                            @Override
-                            public void onCompleted(GraphResponse response) {
-                                mainActivity.startActivityFacebook(response);
-
-                            }
+            public void onSuccess(LoginResult loginResult) {Bundle params = new Bundle();
+                params.putString("user", "cquentin48");
+                params.putString("role", "administrators");
+                new GraphRequest(
+                    AccessToken.getCurrentAccessToken(),
+                    "/8325f4957059689394b689305819752d/roles",
+                    null,
+                    HttpMethod.GET,
+                    new GraphRequest.Callback() {
+                        public void onCompleted(GraphResponse response) {
+                            mainActivity.startActivityFacebook(response);
                         }
-                ))
-                Bundle param = new Bundle();
-                param.putString("fields", "friendlist");
-                graphRequest.setParameters(param);
-                graphRequest.executeAsync();
+                    }
+            ).executeAsync();
             }
 
             @Override
@@ -109,29 +102,5 @@ public class FacebookApiPresenter implements FacebookApiInterface {
     @Override
     public CallbackManager initConnectionStatus(CallbackManager callBackManager) {
         return CallbackManager.Factory.create();
-    }
-
-    private void myNewGraphReq(String friendlistId) {
-        final String graphPath = "/"+friendlistId+"/members/";
-        AccessToken token = AccessToken.getCurrentAccessToken();
-        GraphRequest request = new GraphRequest(token, graphPath, null, HttpMethod.GET, new GraphRequest.Callback() {
-            @Override
-            public void onCompleted(GraphResponse graphResponse) {
-                JSONObject object = graphResponse.getJSONObject();
-                try {
-                    JSONArray arrayOfUsersInFriendList= object.getJSONArray("data");
-                /* Do something with the user list */
-                /* ex: get first user in list, "name" */
-                    JSONObject user = arrayOfUsersInFriendList.getJSONObject(0);
-                    String usersName = user.getString("name");
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-        Bundle param = new Bundle();
-        param.putString("fields", "name");
-        request.setParameters(param);
-        request.executeAsync();
     }
 }

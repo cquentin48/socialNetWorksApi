@@ -3,13 +3,17 @@ package com.example.lpiem.facebookapp;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.facebook.CallbackManager;
 import com.facebook.GraphResponse;
+import com.facebook.login.LoginManager;
 import com.facebook.login.widget.LoginButton;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+
+import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity {
     private CallbackManager callbackManager;
@@ -24,10 +28,12 @@ public class MainActivity extends AppCompatActivity {
         facebookApiPresenter = new FacebookApiPresenter(this);
 
         LoginButton loginButton = findViewById(R.id.login_button);
+        loginButton.setReadPermissions(Arrays.asList("user_status","user_friends"));
         if(facebookApiPresenter.isUserLoggedIn() == true){
-            this.startActivityFacebook(null);
+            Intent facebookIntent = new Intent(MainActivity.this, MainActivityFacebook.class);
+            startActivity(facebookIntent);
         }else{
-            facebookApiPresenter.logIn(loginButton,callbackManager);
+            LoginManager.getInstance().logOut();
         }
 
     }
@@ -41,10 +47,11 @@ public class MainActivity extends AppCompatActivity {
     public void startActivityFacebook(GraphResponse response){
         Intent intent = new Intent(MainActivity.this,MainActivityFacebook.class);
         try{
-            JSONArray array = response.getJSONObject().getJSONArray("data");
-            intent.putExtra("jsondata", array.toString());
+            JSONArray rawName = response.getJSONObject().getJSONArray("data");
+            intent.putExtra("jsondata",rawName.toString());
+            Log.d("Retour JSONData",rawName.toString());
             startActivity(intent);
-        } catch (JSONException e) {
+        }catch(JSONException e){
             e.printStackTrace();
         }
     }
