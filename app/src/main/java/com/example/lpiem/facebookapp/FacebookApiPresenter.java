@@ -59,7 +59,7 @@ public class FacebookApiPresenter implements FacebookApiInterface {
                         });
 
                 Bundle parameters = new Bundle();
-                parameters.putString("fields", "id,name,labels,email,friendlists{id,name}");
+                parameters.putString("fields", "name,email,friends{first_name,last_name,email}");
                 request.setParameters(parameters);
                 request.executeAsync();
             }
