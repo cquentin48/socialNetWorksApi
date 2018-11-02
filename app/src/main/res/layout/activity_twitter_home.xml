@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmnls:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:xmnls="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/twitterUsernameTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:text="" />
+
+    <Button
+        android:id="@+id/composeTweetsButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/twitterUsernameTextView"
+        android:layout_centerHorizontal="true"
+        android:text="Créer un Tweet" />
+</RelativeLayout>

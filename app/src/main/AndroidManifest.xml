@@ -39,10 +39,23 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivityFacebook"></activity>
-        <provider android:authorities="com.facebook.app.FacebookContentProvider{457859408069356}"
+        <activity android:name=".MainActivityFacebook" />
+
+        <provider
             android:name="com.facebook.FacebookContentProvider"
-            android:exported="true"/>
+            android:authorities="com.facebook.app.FacebookContentProvider{457859408069356}"
+            android:exported="true" />
+
+        <activity android:name=".TwitterHomeActivity"></activity>
+        <receiver
+            android:name=".MyResultReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.twitter.sdk.android.tweetcomposer.UPLOAD_SUCCESS"/>
+                <action android:name="com.twitter.sdk.android.tweetcomposer.UPLOAD_FAILURE"/>
+                <action android:name="com.twitter.sdk.android.tweetcomposer.TWEET_COMPOSE_CANCEL"/>
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

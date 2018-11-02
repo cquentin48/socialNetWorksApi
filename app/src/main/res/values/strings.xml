@@ -4,4 +4,6 @@
     <string name="fb_login_protocol_scheme">fb457859408069356</string>
     <string name="fb_logout">Déconnexion de facebook</string>
     <string name="fb_share">Partager sur facebook</string>
+    <string name="com.twitter.sdk.android.CONSUMER_KEY">XXXXXXXXXXX</string>
+    <string name="com.twitter.sdk.android.CONSUMER_SECRET">XXXXXXXXXXX</string>
 </resources>
